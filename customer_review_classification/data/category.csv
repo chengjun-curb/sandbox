@@ -1,0 +1,25 @@
+Code,Curb_Attribute,Category,Sentiment,Kitchen_Category
+1,Cold Food,Delivery,Negative,Temperature
+2,Poor Taste/Quality,Taste,Negative,Taste
+3,Expensive,Price,Negative,Other
+4,Small Portion Size,Portion size,Negative,Other
+5,Wrong/Missing Item,Order inclusion,Negative,Order accuracy
+7,Late/Absent/Rude Delivey,Delivery,Negative,Speed of service
+8,Good/Sustainable Packaging,Packaging/Presentation,Positive,Other
+9,Good Taste/Quality,Taste,Positive,Taste
+10,Poor Variety/Not Allergy Friendly,Concept development,Negative,Other
+11,Poor Packaging,Packaging/Presentation,Negative,Other
+12,Accurate order,Order inclusion,Positive,Order accuracy
+13,Missing Order/Failed delivery,Order inclusion,Negative,Order accuracy
+14,Poor Texture,Texture,Negative,Taste
+15,Hair/Foreign Object,Food Safety,Negative,Food Safety
+16,Lacking information,Product information,Negative,Other
+17,Good texture,Texture,Positive,Taste
+18,Good Variety/Allergy Friendly,Concept development,Positive,Other
+19,Price Worthy,Price,Positive,Other
+20,Good Portion Size,Portion size,Positive,Other
+21,Good Apperance,Appearance,Positive,Appearance
+22,Fast Delivery,Delivery,Positive,Speed of service
+23,Poor Apperance,Appearance,Negative,Appearance
+24,Good Information/Communication,Product information,Positive,Other
+99,Answer Not Interpretable,Unqualified,Neutral,Other
