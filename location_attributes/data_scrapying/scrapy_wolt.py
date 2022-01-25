@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import json
 import os
 import pandas as pd
@@ -8,37 +7,47 @@ import random
 import requests
 import time
 
-
-WOLT_RESTAURANT_DATA = 'wolt_restaurant_data'
-WOLT_MENU_DATA = 'wolt_menu_data'
-
-def get_json(plz, lat, lon):
+def get_store_ids(plz, lat, lon):
     time.sleep(random.random()+4)
     url = f'https://restaurant-api.wolt.com/v1/pages/delivery?lat={lat}&lon={lon}'
     r = requests.get(url)
     if r.status_code == 200:
-        fname = f"./{WOLT_RESTAURANT_DATA}/{lat}_{lon}.json"
+        fname = f"../data_output/wolt/store_ids/store_ids_{plz}_{lat}_{lon}.json"
         open(fname , 'wb').write(r.content)
     if r.status_code != 200:
         print(f"Warning, Warning, Warning: {r.status_code}")
 
-if False:
+def get_store_json(store_id):
+    url = f'https://restaurant-api.wolt.com/v4/venues/{store_id}/menu'
+    r = requests.get(url)
+    r.raise_for_status()
+    fname = f'../data_output/wolt/stores/{store_id}.json'
+    open(fname , 'wb').write(r.content)
+
+
+if __name__ == '__main__':
+    df_plz = pd.read_json('../data_output/sampled_plz_2stellig.json', dtype={'plz': str})
+
     print('Scrape Wolt restaurant id...')
-    df = pd.read_json('../income/plz_sampled_points_10.json', dtype={'plz': str})
+    df_plz = df_plz.loc[df_plz.plz == '10']
+    for i in df_plz.iterrows():
+        plz = i[1][0]
+        print(f'Working on {plz} ...')
+        points = i[1][1]
+        for p in points:
+            try:
+                latitude = p[1]
+                longitude = p[0]
+                print(f'{latitude} - {longitude}')
+                get_store_ids(plz, latitude, longitude)
+            except:
+                print(f'Skip one point in {plz} ...')
+    print('Finish scraping the store ids')
 
-    for row in df.itertuples():
-        plz = row.plz
-        print(f'Wolt: {plz}')
-        for p in row.sampled_points[1:3]:
-            lat = p[1]
-            lon = p[0]
-            get_json(plz, lat, lon)
-    print('DONE')
-
-if False:
+    # TODO: refactor this using extract
     print('Extract Wolt restaurant id...')
     location_list = []
-    directory = f"./{WOLT_RESTAURANT_DATA}"
+    directory = f"../data_output/wolt/store_ids/"
     for filename in os.listdir(directory):
         if filename.endswith(".json"):
             path = os.path.join(directory, filename)
@@ -56,19 +65,14 @@ if False:
             except:
                 print("No platform there yet!")
 
-    cols = ['restaurant_id', 'name', 'address', 'city', 'lat', 'lon']
+    cols = ['store_id', 'name', 'address', 'city', 'lat', 'lon']
     df = pd.DataFrame(location_list, columns=cols)
     df = df.drop_duplicates()
-    print(df.shape)
-    df.to_csv('./wolt_restaurant.csv')
+    df.to_csv('../data_output/wolt/wolt_store_ids.csv')
 
-if False:
     print('Download Wolt endpoints...')
-    df = pd.read_csv('./wolt_restaurant.csv')
-    for i in df.restaurant_id:
-        print(i)
-        url = f'https://restaurant-api.wolt.com/v4/venues/{i}/menu'
-        r = requests.get(url)
-        fname = f'./{WOLT_MENU_DATA}/{i}.json'
-        open(fname , 'wb').write(r.content)
+    df = pd.read_csv('../data_output/wolt/wolt_store_ids.csv')
+    for store_id in df['store_id']:
+        print(f'scrape :{store_id}')
+        get_store_json(store_id)
         time.sleep(random.random()+1)

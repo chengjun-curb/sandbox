@@ -60,8 +60,10 @@ def _save_folium_map(df):
 
 if __name__ == '__main__':
     IS_DEBUG = False
-    POLYGON_FILE = '../data_input/plz-3stellig.shp/'
-    OUTPUT_JSON = '../data_output/sampled_plz_3stellig.json'
+    # POLYGON_FILE = '../data_input/plz-3stellig.shp/'
+    # OUTPUT_JSON = '../data_output/sampled_plz_3stellig.json'
+    POLYGON_FILE = '../data_input/plz-2stellig.shp/'
+    OUTPUT_JSON = '../data_output/sampled_plz_2stellig.json'
     OUTPUT_MAP = '../data_output/sampled_map.html'
     size_unit = 40
 
