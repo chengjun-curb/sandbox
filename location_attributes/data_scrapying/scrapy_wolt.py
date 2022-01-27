@@ -55,17 +55,18 @@ if __name__ == '__main__':
             try:
                 for i in j['sections'][0]['items']:
                     restaurant_id = i['venue']['id']
+                    slug = i['venue']['slug']
                     name = i['venue']['name']
                     address = i['venue']['address']
                     city = i['venue']['city']
                     lon = i['venue']['location'][0]
                     lat = i['venue']['location'][1]
-                    data = [restaurant_id, name, address, city, lat, lon]
+                    data = [restaurant_id, slug, name, address, city, lat, lon]
                     location_list.append(data)
             except:
                 print("No platform there yet!")
 
-    cols = ['store_id', 'name', 'address', 'city', 'lat', 'lon']
+    cols = ['store_id', 'slug', 'name', 'address', 'city', 'lat', 'lon']
     df = pd.DataFrame(location_list, columns=cols)
     df = df.drop_duplicates()
     df.to_csv('../data_output/wolt/wolt_store_ids.csv')
